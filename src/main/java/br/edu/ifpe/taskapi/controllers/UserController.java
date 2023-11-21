@@ -22,7 +22,7 @@ public class UserController {
 		return service.cadastrarUsuario(user);
 	}
 	
-	@GetMapping("/ola")
+	@GetMapping("ola")
     public String ola() {
         return "Olá";
     }

@@ -23,7 +23,7 @@ public class TokenUtil {
 
     private static final long EXPIRATION = 60 * 60 * 1000;
     private static final String EMISSOR = "task_api";
-    private static final String SECRET_KEY = "Vw4I2i1R169!&@OqK#u5!64@vDu@Ihbg";
+    private static final String SECRET_KEY = "Vw4I2i1R169!&@UqK#u2!64@xDu@Ihbg";
     private static final String PREFIX = "Bearer";
 
     public static String createToken(String subject, List<String> permissions) {

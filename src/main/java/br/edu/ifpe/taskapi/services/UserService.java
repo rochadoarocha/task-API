@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import br.edu.ifpe.taskapi.dto.create.UsersDTO;
 import br.edu.ifpe.taskapi.dto.read.UsersLoginDTO;
 import br.edu.ifpe.taskapi.entities.User;
@@ -69,5 +69,14 @@ public class UserService {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		
+	}
+	
+	public ResponseEntity<?> deleteUser(@PathVariable Integer id){
+		try {
+			repository.deleteById(id);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
 	}
 }

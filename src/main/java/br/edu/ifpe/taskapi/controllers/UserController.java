@@ -9,8 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -51,8 +53,18 @@ public class UserController {
 	        @ApiResponse(responseCode = "404", description = "User not found"),
 	        @ApiResponse(responseCode = "500", description = "Internal Server Error")})
 	@PostMapping("api/login")
-	public ResponseEntity<?>LoginUser(@RequestBody UsersLoginDTO userLoginDTO){
+	public ResponseEntity<?>loginUser(@RequestBody UsersLoginDTO userLoginDTO){
 		return service.loginUser(userLoginDTO);
+		
+	}
+	
+	@Operation(summary = "Delete a User", description = "Endpoint to delete a user by your Id")
+	@ApiResponses(value = {
+	        @ApiResponse(responseCode = "201", description = "Successfully Deleted"),
+	        @ApiResponse(responseCode = "500", description = "Internal Server Error")})
+	@DeleteMapping("api/users/{id}")
+	public ResponseEntity<?> deleteUser(@PathVariable Integer id){
+		return service.deleteUser(id);
 		
 	}
 	

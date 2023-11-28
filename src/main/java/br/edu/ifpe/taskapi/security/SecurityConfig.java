@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -32,9 +33,10 @@ public class SecurityConfig {
         	.authorizeHttpRequests((authorizeHttpRequests) ->
  				authorizeHttpRequests
  					.requestMatchers(HttpMethod.GET,"/swagger-ui/*","/v3/api-docs/*","/v3/api-docs","/swagger-ui.html").permitAll()
- 					.requestMatchers(HttpMethod.GET,"ola").permitAll()
+ 					.requestMatchers(HttpMethod.POST,"api/login").permitAll()
  					.requestMatchers(HttpMethod.POST,"api/users").permitAll()
  					.anyRequest().authenticated());
+        http.addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
 	}
 	

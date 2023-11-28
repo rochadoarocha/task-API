@@ -1,4 +1,4 @@
-package br.edu.ifpe.taskapi.dto;
+package br.edu.ifpe.taskapi.dto.create;
 
 import org.springframework.beans.BeanUtils;
 

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import br.edu.ifpe.taskapi.dto.UsersDTO;
-import br.edu.ifpe.taskapi.dto.UsersLoginDTO;
+import br.edu.ifpe.taskapi.dto.create.UsersDTO;
+import br.edu.ifpe.taskapi.dto.read.UsersLoginDTO;
 import br.edu.ifpe.taskapi.entities.User;
 import br.edu.ifpe.taskapi.repositories.IUserRepository;
 import br.edu.ifpe.taskapi.security.Token;

@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifpe.taskapi.dto.UsersDTO;
-import br.edu.ifpe.taskapi.dto.UsersLoginDTO;
+import br.edu.ifpe.taskapi.dto.create.UsersDTO;
+import br.edu.ifpe.taskapi.dto.read.UsersLoginDTO;
+import br.edu.ifpe.taskapi.entities.User;
 import br.edu.ifpe.taskapi.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,7 +46,7 @@ public class UserController {
 	
 	@Operation(summary = "Authenticate a User", description = "Endpoint to authenticate a user and generate an access token.")
 	@ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "Successfully authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UsersDTO.class))),
+	        @ApiResponse(responseCode = "200", description = "Successfully authenticated", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = User.class))),
 	        @ApiResponse(responseCode = "401", description = "Unauthorized - Incorrect email or password"),
 	        @ApiResponse(responseCode = "404", description = "User not found"),
 	        @ApiResponse(responseCode = "500", description = "Internal Server Error")})

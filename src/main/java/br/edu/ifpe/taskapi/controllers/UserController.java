@@ -82,7 +82,6 @@ public class UserController {
 			String fieldName = ((FieldError) error).getField();
 			String errorMessage = error.getDefaultMessage();
 			errors.put(fieldName,errorMessage);
-			errors.put(fieldName,errorMessage);
 			});
 		return errors;
 		

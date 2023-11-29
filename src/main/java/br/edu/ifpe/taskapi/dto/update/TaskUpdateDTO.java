@@ -1,4 +1,4 @@
-package br.edu.ifpe.taskapi.dto.create;
+package br.edu.ifpe.taskapi.dto.update;
 
 import org.springframework.beans.BeanUtils;
 
@@ -9,8 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TaskDTO {
-	
+public class TaskUpdateDTO {
 	
 	@NotNull(message="Nome não pode ser Nulo")
 	private String title;
@@ -21,18 +20,15 @@ public class TaskDTO {
 	@NotNull(message=" não pode ser Nulo")
 	private Boolean status;
 	
-	@NotNull(message="Nome não pode ser Nulo")
-    private Integer user_id;
-	
-	public TaskDTO(Task entity) {
+	public TaskUpdateDTO(Task entity) {
 		BeanUtils.copyProperties(entity, this);
 		
 	}
 	
-	public TaskDTO () {
+	public TaskUpdateDTO () {
 		
 	}
 
 	
-	
+
 }

@@ -1,6 +1,7 @@
 package br.edu.ifpe.taskapi.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import br.edu.ifpe.taskapi.dto.create.TaskDTO;
 import br.edu.ifpe.taskapi.dto.read.TaskReadDTO;
 import br.edu.ifpe.taskapi.dto.read.UserMinDTO;
+import br.edu.ifpe.taskapi.dto.update.TaskUpdateDTO;
 import br.edu.ifpe.taskapi.entities.Task;
 import br.edu.ifpe.taskapi.entities.User;
 import br.edu.ifpe.taskapi.repositories.ITaskRepository;
@@ -65,13 +67,30 @@ public class TaskService {
 	}
 	
 	@Transactional
-	public ResponseEntity<Task> updateTask (@RequestBody Task task) {
-		try {
-			
-		} catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-		return null;
+	public ResponseEntity<?> updateTask(@PathVariable Integer taskId, @RequestBody TaskUpdateDTO updatedTaskDTO) {
+	    try {
+	        Optional<Task> existingTaskOptional = taskRepository.findById(taskId);
+	        if (existingTaskOptional.isPresent()) {
+	            Task existingTask = existingTaskOptional.get();
+
+	            existingTask.setTitle(updatedTaskDTO.getTitle());
+	            existingTask.setDescription(updatedTaskDTO.getDescription());
+	            existingTask.setStatus(updatedTaskDTO.getStatus());
+
+	            TaskReadDTO taskReadDTO = new TaskReadDTO();
+                BeanUtils.copyProperties(existingTask, taskReadDTO);		              
+                UserMinDTO userMinDTO = new UserMinDTO();
+                BeanUtils.copyProperties(existingTask.getUser(), userMinDTO);		   
+                taskReadDTO.setUserMinDTO(userMinDTO);
+     
+                
+	            return ResponseEntity.status(HttpStatus.OK).body(taskReadDTO);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task Not Found");
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	    }
 	}
 	
 	@Transactional

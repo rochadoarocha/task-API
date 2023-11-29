@@ -28,13 +28,13 @@ public class Task {
 	private String description;
 	
 	@Column(name = "status", nullable = false)
-	private boolean status;
+	private Boolean status;
 	
 	@ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 	
-	public Task(String title, String description, boolean status, User user) {
+	public Task(String title, String description, Boolean status, User user) {
 		this.title = title;
 		this.description = description;
 		this.status = status;

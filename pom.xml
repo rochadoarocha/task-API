@@ -43,7 +43,6 @@
 		    <artifactId>mysql-connector-j</artifactId>
 		    <scope>runtime</scope>
 		</dependency>
-		
 		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
 		<dependency>
 			<groupId>com.auth0</groupId>
@@ -96,18 +95,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>br.edu.ifpe.taskapi.TaskApiApplication</mainClass>
 					<image>
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
 					</image>
 					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>docker-spring-boot</finalName> 
 	</build>
 
 </project>

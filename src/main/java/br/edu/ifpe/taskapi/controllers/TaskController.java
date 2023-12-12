@@ -54,18 +54,30 @@ public class TaskController {
 	            @ApiResponse(responseCode = "500", description = "Internal Server Error")
 	    })
 		@GetMapping("api/tasks/{id}")
-	    public ResponseEntity<List<TaskReadDTO>> getTasksByUserId(@PathVariable Integer id) {
+	    public ResponseEntity<?> getTasksByUserId(@PathVariable Integer id) {
 	        return service.getTasksByUserId(id);
 	    }
 		
 		
-		
+		@Operation(summary = "Update Task", description = "Endpoint to Update an Existing Task.")
+		@ApiResponses(value = {
+	            @ApiResponse(responseCode = "200", description = "Task Updated"),
+				@ApiResponse(responseCode = "404", description = "Task not_Found by Id"),
+	            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+	    })
 		@PatchMapping("api/tasks/{id}")
 		public ResponseEntity<?> updateTask(@PathVariable Integer id, @RequestBody TaskUpdateDTO taskDTO){
 			return service.updateTask(id, taskDTO);
 			
 		}
 		
+
+		@Operation(summary = "Delete Task", description = "Endpoint to Delete an Existing Task.")
+		@ApiResponses(value = {
+	            @ApiResponse(responseCode = "204", description = "Task Deleted"),
+				@ApiResponse(responseCode = "404", description = "Task not_Found by Id"),
+	            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+	    })
 		@DeleteMapping("api/tasks/{id}")
 		public ResponseEntity<?> deleteTask(@PathVariable Integer id){
 			return service.deleteTask(id);

@@ -32,10 +32,10 @@ public class SecurityConfig {
         http.csrf((csrf) -> csrf.disable())
         	.authorizeHttpRequests((authorizeHttpRequests) ->
  				authorizeHttpRequests
- 					.requestMatchers(HttpMethod.GET,"/swagger-ui/*","/v3/api-docs/*","/v3/api-docs","/swagger-ui.html","api/tasks/*").permitAll()
+ 					.requestMatchers(HttpMethod.GET,"/swagger-ui/*","/v3/api-docs/*","/v3/api-docs","/swagger-ui.html","api/tasks/*","api/users/*").permitAll()
  					.requestMatchers(HttpMethod.POST,"api/login","api/users","api/tasks").permitAll()
  					.requestMatchers(HttpMethod.DELETE,"api/users/*","api/tasks/*").permitAll()
- 					.requestMatchers(HttpMethod.PATCH,"api/tasks/*").permitAll()
+ 					.requestMatchers(HttpMethod.PATCH,"api/tasks/*","api/users/*").permitAll()
  					.anyRequest().authenticated());
         http.addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

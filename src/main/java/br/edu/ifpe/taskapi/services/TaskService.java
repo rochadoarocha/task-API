@@ -34,7 +34,7 @@ public class TaskService {
 	@Transactional
 	public ResponseEntity<?> createTask (@RequestBody TaskDTO taskDTO){
 		try {
-		 User user = userRepository.findById(taskDTO.getUser_id()).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+		 User user = userRepository.findById(taskDTO.getUserId()).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
 		 Task newTask = new Task(taskDTO.getTitle(),taskDTO.getDescription(), false, user);
 		 taskRepository.save(newTask);
 		 return ResponseEntity.status(HttpStatus.CREATED).body(newTask);			
@@ -82,7 +82,7 @@ public class TaskService {
                 UserMinDTO userMinDTO = new UserMinDTO();
                 BeanUtils.copyProperties(existingTask.getUser(), userMinDTO);		   
                 taskReadDTO.setUserMinDTO(userMinDTO);
-     
+ 
                 
 	            return ResponseEntity.status(HttpStatus.OK).body(taskReadDTO);
 	        } else {

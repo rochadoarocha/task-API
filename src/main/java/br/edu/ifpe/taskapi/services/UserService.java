@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import br.edu.ifpe.taskapi.dto.create.UsersDTO;
+import br.edu.ifpe.taskapi.dto.read.UserMinDTO;
 import br.edu.ifpe.taskapi.dto.read.UsersLoginDTO;
 import br.edu.ifpe.taskapi.entities.User;
+import br.edu.ifpe.taskapi.repositories.ITaskRepository;
 import br.edu.ifpe.taskapi.repositories.IUserRepository;
 import br.edu.ifpe.taskapi.security.Token;
 import br.edu.ifpe.taskapi.security.TokenUtil;
@@ -24,6 +26,8 @@ public class UserService {
 	
 	@Autowired
 	private IUserRepository repository;
+	@Autowired
+	private ITaskRepository taskRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -56,8 +60,8 @@ public class UserService {
 			    if (passwordEncoder.matches(password, userToLogin.get().getPassword())) {
 						String tokenAuth = TokenUtil.createToken(userToLogin.get().getEmail());
 						Token token = new Token(tokenAuth);
-						userToLogin.get().setPassword("");
-						return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.AUTHORIZATION,token.getToken()).body(userToLogin);
+						UserMinDTO userMinDTO = new UserMinDTO(userToLogin.get());
+						return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.AUTHORIZATION,token.getToken()).body(userMinDTO);
 				}else{
 					return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou Senha incorretos!");
 					}
@@ -73,6 +77,7 @@ public class UserService {
 	
 	public ResponseEntity<?> deleteUser(@PathVariable Integer id){
 		try {
+			taskRepository.deleteTasksByUserId(id);
 			repository.deleteById(id);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}catch(Exception e) {

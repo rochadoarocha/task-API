@@ -22,7 +22,7 @@ public class TaskDTO {
 	private Boolean status;
 	
 	@NotNull(message="Nome não pode ser Nulo")
-    private Integer user_id;
+    private Integer userId;
 	
 	public TaskDTO(Task entity) {
 		BeanUtils.copyProperties(entity, this);

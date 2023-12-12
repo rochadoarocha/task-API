@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -63,6 +64,11 @@ public class TaskController {
 		public ResponseEntity<?> updateTask(@PathVariable Integer id, @RequestBody TaskUpdateDTO taskDTO){
 			return service.updateTask(id, taskDTO);
 			
+		}
+		
+		@DeleteMapping("api/tasks/{id}")
+		public ResponseEntity<?> deleteTask(@PathVariable Integer id){
+			return service.deleteTask(id);
 		}
 		
 		@ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -47,7 +47,7 @@ public class TaskService {
 	}
 	
 	@Transactional(readOnly = true)
-	public ResponseEntity <List<TaskReadDTO>> getTasksByUserId(@PathVariable Integer userId) {
+	public ResponseEntity <?> getTasksByUserId(@PathVariable Integer userId) {
 		try {
 			List<Task> taskByUserId = taskRepository.FindTaskByUserId(userId);
 			List<TaskReadDTO> taskReadDTOList = taskByUserId.stream()
@@ -63,7 +63,7 @@ public class TaskService {
 
 			return ResponseEntity.status(HttpStatus.OK).body(taskReadDTOList);
 			} catch(Exception e) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor");
 		}
 		
 	}
@@ -91,17 +91,22 @@ public class TaskService {
 	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task Not Found");
 	        }
 	    } catch (Exception e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor");
 	    }
 	}
 	
 	@Transactional
-	public ResponseEntity<Task> deleteTask (@PathVariable Integer id) {
+	public ResponseEntity<?> deleteTask (@PathVariable Integer id) {
 		try {
-			taskRepository.deleteById(id);
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			Task taskToDelte = taskRepository.findById(id).get();
+			if(taskToDelte != null){
+				taskRepository.deleteById(id);
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Tarefa Deletado com Sucesso!");
+			}else{
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tarefa Não Encontrada.");
+			}
 		} catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro Interno do Servidor.");
 		}
 	}
 

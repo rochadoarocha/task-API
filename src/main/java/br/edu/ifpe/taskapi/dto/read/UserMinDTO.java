@@ -11,6 +11,7 @@ import lombok.Setter;
 public class UserMinDTO {
 	
 	private Integer id;
+	private String email;
 	private String name;
 	
 	public UserMinDTO(User entity) {

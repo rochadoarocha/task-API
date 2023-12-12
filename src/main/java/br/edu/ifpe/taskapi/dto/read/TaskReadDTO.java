@@ -27,10 +27,20 @@ public class TaskReadDTO {
 		BeanUtils.copyProperties(entity, this);
 		
 	}
+
+	public TaskReadDTO (Integer id, String title, String description, Boolean status, UserMinDTO userminDTO) {
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.status = status;
+		this.userMinDTO = userminDTO;
+	}
 	
 	public TaskReadDTO () {
 		
 	}
+
+
 
 }
 

@@ -37,7 +37,9 @@ public class TaskService {
 		 User user = userRepository.findById(taskDTO.getUserId()).orElseThrow(() -> new IllegalArgumentException("User Not Found"));
 		 Task newTask = new Task(taskDTO.getTitle(),taskDTO.getDescription(), false, user);
 		 taskRepository.save(newTask);
-		 return ResponseEntity.status(HttpStatus.CREATED).body(newTask);			
+		 UserMinDTO userMinDto = new UserMinDTO(newTask.getUser());
+		 TaskReadDTO taskDto = new TaskReadDTO(newTask.getId(),newTask.getTitle(),newTask.getDescription(),newTask.getStatus(),userMinDto);
+		 return ResponseEntity.status(HttpStatus.CREATED).body(taskDto);			
 		} catch (IllegalArgumentException e1) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e1.getMessage());
 		}

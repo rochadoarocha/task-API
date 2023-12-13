@@ -4,7 +4,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +25,6 @@ public class UserService {
 	@Autowired
 	private ITaskRepository taskRepository;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
 
 	@Transactional
 	public ResponseEntity<?> createUser (@RequestBody UsersDTO userDTO){
@@ -37,8 +33,7 @@ public class UserService {
 			if(isCreated.isPresent()) {
 				return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
 			}else {
-				String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
-				User newUser = new User(userDTO.getName(),userDTO.getEmail(),encryptedPassword);
+				User newUser = new User(userDTO.getName(),userDTO.getEmail(),userDTO.getPassword());
 				repository.save(newUser);
 				return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com Sucesso!");
 			}
@@ -54,7 +49,7 @@ public class UserService {
 			String password = userLoginDTO.getPassword();
 			Optional<User> userToLogin = repository.findByEmail(email);
 			if (userToLogin.isPresent()) {
-			    if (passwordEncoder.matches(password, userToLogin.get().getPassword())) {
+			    if (userLoginDTO.getPassword().equals(password)) {
 						UserMinDTO userMinDTO = new UserMinDTO(userToLogin.get());
 						return ResponseEntity.status(HttpStatus.OK).body(userMinDTO);
 				}else{
@@ -98,8 +93,7 @@ public class UserService {
 		try{
 			User user = repository.findById(id).get();
 			if (user != null){
-				String encryptedPassword = passwordEncoder.encode(userUpdateDto.getPassword());
-				user.setPassword(encryptedPassword);
+				user.setPassword(userUpdateDto.getPassword());
 				repository.save(user);
 				UserMinDTO userResponse = new UserMinDTO(user);
 				return ResponseEntity.status(HttpStatus.OK).body(userResponse);

@@ -30,10 +30,11 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
         http.csrf((csrf) -> csrf.disable())
+			.cors(cors -> cors.disable())
         	.authorizeHttpRequests((authorizeHttpRequests) ->
  				authorizeHttpRequests
  					.requestMatchers(HttpMethod.GET,"/swagger-ui/*","/v3/api-docs/*","/v3/api-docs","/swagger-ui.html","api/tasks/*","api/users/*").permitAll()
- 					.requestMatchers(HttpMethod.POST,"api/login","api/users","api/tasks").permitAll()
+ 					.requestMatchers(HttpMethod.POST,"api/login","api/tasks","api/users").permitAll()
  					.requestMatchers(HttpMethod.DELETE,"api/users/*","api/tasks/*").permitAll()
  					.requestMatchers(HttpMethod.PATCH,"api/tasks/*","api/users/*").permitAll()
  					.anyRequest().authenticated());
@@ -41,7 +42,6 @@ public class SecurityConfig {
         return http.build();
 	}
 	
-
 	@Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -18,16 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
 	
 	@Bean
-	WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
-			}
-		};
-	}
-	
-	@Bean
 	SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
         http.csrf((csrf) -> csrf.disable())
 			.cors(cors -> cors.disable())
@@ -36,9 +26,7 @@ public class SecurityConfig {
  					.requestMatchers(HttpMethod.GET,"/swagger-ui/*","/v3/api-docs/*","/v3/api-docs","/swagger-ui.html","api/tasks/*","api/users/*").permitAll()
  					.requestMatchers(HttpMethod.POST,"api/login","api/tasks","api/users").permitAll()
  					.requestMatchers(HttpMethod.DELETE,"api/users/*","api/tasks/*").permitAll()
- 					.requestMatchers(HttpMethod.PATCH,"api/tasks/*","api/users/*").permitAll()
- 					.anyRequest().authenticated());
-        http.addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
+ 					.requestMatchers(HttpMethod.PATCH,"api/tasks/*","api/users/*").permitAll());
         return http.build();
 	}
 	

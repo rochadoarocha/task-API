@@ -4,6 +4,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,8 @@ public class UserService {
 	private IUserRepository repository;
 	@Autowired
 	private ITaskRepository taskRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 
 	@Transactional
@@ -33,7 +36,8 @@ public class UserService {
 			if(isCreated.isPresent()) {
 				return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado!");
 			}else {
-				User newUser = new User(userDTO.getName(),userDTO.getEmail(),userDTO.getPassword());
+				String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+				User newUser = new User(userDTO.getName(),userDTO.getEmail(),encryptedPassword);
 				repository.save(newUser);
 				return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com Sucesso!");
 			}
@@ -49,7 +53,7 @@ public class UserService {
 			String password = userLoginDTO.getPassword();
 			Optional<User> userToLogin = repository.findByEmail(email);
 			if (userToLogin.isPresent()) {
-			    if (userLoginDTO.getPassword().equals(password)) {
+			    if (passwordEncoder.matches(password, userToLogin.get().getPassword())) {
 						UserMinDTO userMinDTO = new UserMinDTO(userToLogin.get());
 						return ResponseEntity.status(HttpStatus.OK).body(userMinDTO);
 				}else{
@@ -65,6 +69,7 @@ public class UserService {
 		
 	}
 	
+	@Transactional
 	public ResponseEntity<?> deleteUser(@PathVariable Integer id){
 		try {
 			taskRepository.deleteTasksByUserId(id);
@@ -89,11 +94,13 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	public ResponseEntity<?> updateUser(@PathVariable Integer id,@RequestBody UserUpdateDTO userUpdateDto){
 		try{
 			User user = repository.findById(id).get();
 			if (user != null){
-				user.setPassword(userUpdateDto.getPassword());
+				String encryptedPassword = passwordEncoder.encode(userUpdateDto.getPassword());
+				user.setPassword(encryptedPassword);
 				repository.save(user);
 				UserMinDTO userResponse = new UserMinDTO(user);
 				return ResponseEntity.status(HttpStatus.OK).body(userResponse);

@@ -1,9 +1,7 @@
 package br.edu.ifpe.taskapi.services;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +16,6 @@ import br.edu.ifpe.taskapi.dto.update.UserUpdateDTO;
 import br.edu.ifpe.taskapi.entities.User;
 import br.edu.ifpe.taskapi.repositories.ITaskRepository;
 import br.edu.ifpe.taskapi.repositories.IUserRepository;
-import br.edu.ifpe.taskapi.security.Token;
-import br.edu.ifpe.taskapi.security.TokenUtil;
 
 
 @Service
@@ -59,10 +55,8 @@ public class UserService {
 			Optional<User> userToLogin = repository.findByEmail(email);
 			if (userToLogin.isPresent()) {
 			    if (passwordEncoder.matches(password, userToLogin.get().getPassword())) {
-						String tokenAuth = TokenUtil.createToken(userToLogin.get().getEmail());
-						Token token = new Token(tokenAuth);
 						UserMinDTO userMinDTO = new UserMinDTO(userToLogin.get());
-						return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.AUTHORIZATION,token.getToken()).body(userMinDTO);
+						return ResponseEntity.status(HttpStatus.OK).body(userMinDTO);
 				}else{
 					return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou Senha incorretos!");
 					}

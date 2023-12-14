@@ -1,5 +1,6 @@
 package br.edu.ifpe.taskapi.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class TaskService {
 		                return taskReadDTO;
 		            })
 		            .collect(Collectors.toList());
-
+			Collections.reverse(taskReadDTOList);
 			return ResponseEntity.status(HttpStatus.OK).body(taskReadDTOList);
 			} catch(Exception e) {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor");

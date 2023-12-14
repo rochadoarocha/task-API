@@ -21,10 +21,10 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "title", length = 30, nullable = false)
+	@Column(name = "title", length = 50, nullable = false)
 	private String title;
 	
-	@Column(name = "description", length = 200, nullable = false)
+	@Column(name = "description", length = 300, nullable = false)
 	private String description;
 	
 	@Column(name = "status", nullable = false)
